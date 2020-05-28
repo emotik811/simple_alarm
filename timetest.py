@@ -1,5 +1,8 @@
 import datetime
-from tkinter import *
+from tkinter import Tk
+from tkinter import Label
+from tkinter import Entry
+from tkinter import Button
 from playsound import playsound
 
 #   1:  preguntar tiempo del cronometro (primero hora, luego minutos) //segundos??
@@ -10,7 +13,8 @@ from playsound import playsound
 
 #0: menu principal, 1 set alarm, 2 change alarm
 program_state = 0
-tune_path = '/home/emotik811/Music/Nokia ringtone arabic.mp3'
+tune_path = '/home/emotik811/Music/Nokia ringtone arabic.mp3' #no sirve ahora, era solo de Linux
+
 #VENTANA#
 window = Tk()
 window.title('Simple Alarm')
@@ -103,7 +107,8 @@ def set_alarm_tune():
     tune_path = new_tune_path
 
 
-window = tkinter.Tk()
+print('Al menos se ejecuta... supongo que es algo')
+window = Tk()
 window.mainloop()
 
 #control()
