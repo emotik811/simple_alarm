@@ -5,15 +5,15 @@ from tkinter import Entry
 from tkinter import Button
 from playsound import playsound
 
-#   1:  preguntar tiempo del cronometro (primero hora, luego minutos) //segundos??
-#   2:  obtener fecha actual
-#   3:  obtener fecha en la que debería sonar la alarma
-#   4:  esperar a que coincidad
-#     
 
-#0: menu principal, 1 set alarm, 2 change alarm
-program_state = 0
-tune_path = '/home/emotik811/Music/Nokia ringtone arabic.mp3' #no sirve ahora, era solo de Linux
+tune_path = 'E:\juanr\Music\Memento Mori\Dreadnaught.mp3'
+
+#States: no_time, playing, pause
+program_state = 'no_time'
+
+#Default: font, font size, font color, background color
+font = 'Arial Bold'
+font_size = 12
 
 #VENTANA#
 window = Tk()
@@ -22,84 +22,67 @@ window.geometry('350x200')
 
 
 
-#ETIQUETAS#
-label_path = Label(window,text='Tune: '+tune_path,font=('Arial Bold',12))
-label_path.grid(column=0,row=0)
 
-#TEXTO#
+#TUNE#
+#label_path = Label(window,text='Tune: '+tune_path,font=(font,font_size))
+#label_path.grid(column=1,row=0)
+#change_tune_botton = Button(window, text='Change')
+#change_tune_botton.grid(column=0,row=0)
 
-#FUNCIONES#
-
-def button_set_alarmn_clicked():
-
-    set_alarm_window =Tk()
-    set_alarm_window.title('Simple Alarm: Set Alarm')
-
-
-    text_hours = Entry(set_alarm_window, width=8)
-    text_minutes=Entry(set_alarm_window,width=8)
-    text_seconds=Entry(set_alarm_window, width=8)
+#TIME#
+fc=1
+if program_state == 'no_time':
     
-    label_hours = Label(set_alarm_window,text='Hours: ')
-    label_hours.grid(column=0,row=1)
-    label_minutes = Label(set_alarm_window,text='Minutes: ')
-    label_minutes.grid(column=0,row=2)
-    label_seconds = Label(set_alarm_window,text='Seconds: ')
-    label_seconds.grid(column=0,row=3)
+    entry_hours = Entry(window,width=6)
+    entry_hours.insert(0,'1')
+    entry_hours.grid(column =fc , row=3 )
+    dpl_1 = Label(window,text=':')
+    dpl_1.grid(column=fc+1,row=3)
+    entry_minutes = Entry(window,width=6)
+    entry_minutes.insert(0,'0')
+    entry_minutes.grid(column =fc+2, row=3)
+    dpl_2 = Label(window,text=':')
+    dpl_2.grid(column=fc+3,row=3)
+    entry_seconds = Entry(window,width=6)
+    entry_seconds.insert(0,'0')
+    entry_seconds.grid(column=fc+4,row=3)
+else:
+    remaining_hours = Label(window,width=6,text='h')
+    remaining_hours.grid(column =fc , row=3 )
+    dpl_1 = Label(window,text=':')
+    dpl_1.grid(column=fc+1,row=3)
+    remaining_minutes = Label(window,width=6,text='m')
+    remaining_minutes.grid(column =fc+2, row=3)
+    dpl_2 = Label(window,text=':')
+    dpl_2.grid(column=fc+3,row=3)
+    remaining_seconds = Entry(window,width=6,text='s')
+    remaining_seconds.grid(column=fc+4,row=3)
 
-    text_hours.grid(column=1,row=1)
-    text_minutes.grid(column=1,row=2)
-    text_seconds.grid(column=1,row=3)
+label_state = Label(text=program_state)
+label_state.grid(column = 0, row = 6)
 
-    set_alarm_window.mainloop()
-#BOTONES#
-button_set_alarm = Button(window,text='Set Alarm', font=('Arial Bold',12),command=button_set_alarmn_clicked)
-button_set_alarm.grid(column = 0, row=1)
+def play_button_click():
+    global program_state
+    if program_state == 'no_time':
+        hours = entry_hours.get()
+        minutes = entry_minutes.get()
+        seconds = entry_seconds.get()
+        #time_alarm = datetime.datetime.now() + datetime.timedelta(hours=float(hours), minutes=float(minutes), seconds=float(seconds))
+        program_state ='playing'
+        
+    else:
+        program_state = 'playing_2'   
 
-button_change_tune = Button(window,text='Change Alarm Tune',font=('Arial Bold',12))
-button_change_tune.grid(column = 0, row=2)
-window.mainloop()
+    print(program_state) 
+    #difference = time_alarm - datetime.datetime.now()
 
-def control():
+    #while difference.days>=0:
+     #   print(difference)
+      #  difference = time_alarm - datetime.datetime.now()
 
-    option = -1
+play_button = Button(window, text='Play',command=play_button_click)
+play_button.grid(column=fc+2,row=4)
 
-    while option !='0':
-
-        print('Exit: (0)')
-        print('Set alarm: (1)')
-        print('Change alarm tune: (2) [Actual tune: '+tune_path+']')
-        option = input('Choose an option: ')
-
-        if option == '1':
-            set_alarm()
-        if option == '2':
-            set_alarm_tune()
-            print(tune_path)
-        if option == '0':
-            print('Closing...')
-        else:
-            print('No valid option')
-
-def set_alarm():
-    tiempo_alarma = introduce_values()
-
-    diferencia = tiempo_alarma - datetime.datetime.now()
-
-    while diferencia.days>=0:
-        print(diferencia)
-        diferencia = tiempo_alarma - datetime.datetime.now()
-
-    print("ALARMA SUENA")
-    playsound(tune_path)
-
-def introduce_values():
-
-    hour =input("Introzuca horas: ")
-    minutes = input("Introduzca minutos: ")
-    seconds = input("Introduzca segundos: ")
-    date = datetime.datetime.now() + datetime.timedelta(hours=float(hour), minutes=float(minutes), seconds=float(seconds))
-    return date
 
 def set_alarm_tune():
     global tune_path
@@ -107,9 +90,9 @@ def set_alarm_tune():
     tune_path = new_tune_path
 
 
-print('Al menos se ejecuta... supongo que es algo')
-window = Tk()
 window.mainloop()
+
+
 
 #control()
 
